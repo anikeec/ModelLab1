@@ -1657,11 +1657,11 @@ public class MainUI extends JFrame {
 			jButtonD3GUIapu = new JButton();
 			jButtonD3GUIapu.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5,
 					5, 5, java.awt.Color.white));
-			jButtonD3GUIapu.setText("Example of simple SMO model's realization");
+			jButtonD3GUIapu.setText("Airport application");
 			jButtonD3GUIapu.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					getJDialog3().setVisible(false);
-					com.apu.modellab1.lab3and4apu.GUI app = new com.apu.modellab1.lab3and4apu.GUI();
+					com.apu.modellab1.lab3and4apu.prj.AirportGUI app = new com.apu.modellab1.lab3and4apu.prj.AirportGUI();
 					app.setLocationRelativeTo(MainUI.this);
 					app.setVisible(true);
 

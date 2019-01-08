@@ -1,6 +1,5 @@
 package com.apu.modellab1.lab3and4apu;
 
-import com.apu.modellab1.toLab3and4.*;
 import java.util.function.BooleanSupplier;
 
 import process.Actor;
