@@ -37,6 +37,8 @@ public class AirportGUI extends JFrame{
 
 	private Diagram diagramTicketboxQueueSize = null;
         private Diagram diagramStewardessQueueSize = null;
+        private Diagram diagramAirplaneQueueSize = null;
+        private Diagram diagramRailwayQueueSize = null;
 
 	private JButton jButtonStart = null;
 
@@ -86,6 +88,9 @@ public class AirportGUI extends JFrame{
 	private void startTest() {
 		getJButtonStart().setEnabled(false);
 		getDiagramTicketboxQueue().clear();
+                getDiagramStewardessQueue().clear();
+                getDiagramAirplaneQueue().clear();
+                getDiagramRailwayQueue().clear();
 		Dispatcher dispatcher = new Dispatcher();		
 		dispatcher.addDispatcherFinishListener(
 				()->getJButtonStart().setEnabled(true));
@@ -127,11 +132,11 @@ public class AirportGUI extends JFrame{
 		if (jPanelTest == null) {
 			GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
 			gridBagConstraints13.insets = new Insets(4, 8, 3, 5);
-			gridBagConstraints13.gridy = 1;
+			gridBagConstraints13.gridy = 2;
 			gridBagConstraints13.gridx = 0;
 			GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
 			gridBagConstraints12.insets = new Insets(2, 3, 0, 4);
-			gridBagConstraints12.gridy = 1;
+			gridBagConstraints12.gridy = 2;
 			gridBagConstraints12.ipadx = 10;
 			gridBagConstraints12.ipady = -1;
 			gridBagConstraints12.anchor = GridBagConstraints.EAST;
@@ -159,6 +164,24 @@ public class AirportGUI extends JFrame{
 			gbc_diagramStewardessQueueSize.weighty = 2.0D;
 			gbc_diagramStewardessQueueSize.gridwidth = 1;
                         
+                        GridBagConstraints gbc_diagramAirplaneQueueSize = new GridBagConstraints();
+			gbc_diagramAirplaneQueueSize.insets = new Insets(4, 3, 5, 4);
+			gbc_diagramAirplaneQueueSize.gridx = 0;
+			gbc_diagramAirplaneQueueSize.gridy = 1;
+			gbc_diagramAirplaneQueueSize.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gbc_diagramAirplaneQueueSize.weightx = 0.5D;
+			gbc_diagramAirplaneQueueSize.weighty = 2.0D;
+			gbc_diagramAirplaneQueueSize.gridwidth = 1;
+                        
+                        GridBagConstraints gbc_diagramRailwayQueueSize = new GridBagConstraints();
+			gbc_diagramRailwayQueueSize.insets = new Insets(4, 3, 5, 4);
+			gbc_diagramRailwayQueueSize.gridx = 1;
+			gbc_diagramRailwayQueueSize.gridy = 1;
+			gbc_diagramRailwayQueueSize.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gbc_diagramRailwayQueueSize.weightx = 0.5D;
+			gbc_diagramRailwayQueueSize.weighty = 2.0D;
+			gbc_diagramRailwayQueueSize.gridwidth = 1;
+                        
 			jPanelTest = new JPanel();
 			GridBagLayout gbl_jPanelTest = new GridBagLayout();
 			gbl_jPanelTest.rowWeights = new double[]{0.0, 0.0};
@@ -167,6 +190,8 @@ public class AirportGUI extends JFrame{
                         
 			jPanelTest.add(getDiagramTicketboxQueue(), gbc_diagramTicketboxQueueSize);
                         jPanelTest.add(getDiagramStewardessQueue(), gbc_diagramStewardessQueueSize);
+                        jPanelTest.add(getDiagramAirplaneQueue(), gbc_diagramAirplaneQueueSize);
+                        jPanelTest.add(getDiagramRailwayQueue(), gbc_diagramRailwayQueueSize);
 			jPanelTest.add(getJButtonStart(), gridBagConstraints12);
 			jPanelTest.add(getJCheckBox(), gridBagConstraints13);
 			jPanelTest
@@ -390,6 +415,28 @@ public class AirportGUI extends JFrame{
 			diagramStewardessQueueSize.setPainterColor(new java.awt.Color(204, 102, 0));
 		}
 		return diagramStewardessQueueSize;
+	}
+        
+        public Diagram getDiagramAirplaneQueue() {
+		if (diagramAirplaneQueueSize == null) {
+			diagramAirplaneQueueSize = new Diagram();
+			diagramAirplaneQueueSize.setVerticalMaxText("20");
+			diagramAirplaneQueueSize.setHorizontalMaxText("500");
+			diagramAirplaneQueueSize.setTitleText("Airplane queue size");
+			diagramAirplaneQueueSize.setPainterColor(new java.awt.Color(204, 102, 0));
+		}
+		return diagramAirplaneQueueSize;
+	}
+        
+        public Diagram getDiagramRailwayQueue() {
+		if (diagramRailwayQueueSize == null) {
+			diagramRailwayQueueSize = new Diagram();
+			diagramRailwayQueueSize.setVerticalMaxText("20");
+			diagramRailwayQueueSize.setHorizontalMaxText("500");
+			diagramRailwayQueueSize.setTitleText("Railway queue size");
+			diagramRailwayQueueSize.setPainterColor(new java.awt.Color(204, 102, 0));
+		}
+		return diagramRailwayQueueSize;
 	}
 
 

@@ -31,11 +31,15 @@ public class AirportModel implements IStatisticsable {
 	// Черга транзакцій
 	private QueueForTransactions<Passenger> queueToTicketbox;        
         private QueueForTransactions<Passenger> queueToStewardess;
+        private QueueForTransactions<Passenger> queueToAirplane; 
+        private QueueForTransactions<Passenger> queueToRailway; 
 	
 	/////////Гістограми\\\\\\\\\\\\
 	// Гістограма для довжини черги
 	private DiscretHisto discretHistoQueueToTicketbox;
         private DiscretHisto discretHistoQueueToStewardess;
+        private DiscretHisto discretHistoQueueToAirplane;
+        private DiscretHisto discretHistoQueueToRailway;
 	// Гістограма для часу перебування у черзі
 	private Histo histoPassengerWaitInQueueToTicketbox;
         private Histo histoPassengerWaitInQueueToStewardess;
@@ -91,6 +95,22 @@ public class AirportModel implements IStatisticsable {
 		}
 		return queueToStewardess;
 	}
+        
+        public QueueForTransactions<Passenger> getQueueToAirplane() {
+		if (queueToAirplane == null) {
+			queueToAirplane = new QueueForTransactions<>("QueueToAirplane", dispatcher,
+					getDiscretHistoQueueToAirplane());
+		}
+		return queueToAirplane;
+	}
+        
+        public QueueForTransactions<Passenger> getQueueToRailway() {
+		if (queueToRailway == null) {
+			queueToRailway = new QueueForTransactions<>("QueueToRailway", dispatcher,
+					getDiscretHistoQueueToRailway());
+		}
+		return queueToRailway;
+	}
 
 	public Ticketbox getTicketbox() {
 		if (ticketbox == null) {
@@ -125,6 +145,20 @@ public class AirportModel implements IStatisticsable {
 		}
 		return discretHistoQueueToStewardess;
 	}
+        
+        public DiscretHisto getDiscretHistoQueueToAirplane() {
+		if (discretHistoQueueToAirplane == null) {
+			discretHistoQueueToAirplane = new DiscretHisto();
+		}
+		return discretHistoQueueToAirplane;
+	}
+        
+        public DiscretHisto getDiscretHistoQueueToRailway() {
+		if (discretHistoQueueToRailway == null) {
+			discretHistoQueueToRailway = new DiscretHisto();
+		}
+		return discretHistoQueueToRailway;
+	}
 
 	public Histo getHistoPassengerWaitInQueueToTicketbox() {
 		if (histoPassengerWaitInQueueToTicketbox == null) {
@@ -156,6 +190,9 @@ public class AirportModel implements IStatisticsable {
 
 	public void initForTest() {
 		getQueueToTicketbox().setPainter(gui.getDiagramTicketboxQueue().getPainter());
+                getQueueToStewardess().setPainter(gui.getDiagramStewardessQueue().getPainter());
+                getQueueToAirplane().setPainter(gui.getDiagramAirplaneQueue().getPainter());
+                getQueueToRailway().setPainter(gui.getDiagramRailwayQueue().getPainter());
 		if(gui.getJCheckBox().isSelected()){
 			dispatcher.setProtocolFileName("Console");
 		}
