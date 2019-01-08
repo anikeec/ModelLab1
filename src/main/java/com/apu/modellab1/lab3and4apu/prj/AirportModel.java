@@ -26,6 +26,9 @@ public class AirportModel implements IStatisticsable {
 	private Ticketbox ticketbox;		
 	//Бригада обслуговуючих пристроїв
 	private MultiActor multTicketbox;
+        
+        //queue max size
+        private Integer queueMaxSize;
 	
 	/////////Черги\\\\\\\\\
 	// Черга транзакцій
@@ -79,6 +82,12 @@ public class AirportModel implements IStatisticsable {
 		}
 		return generator;
 	}
+        
+        public int getQueueMaxSize() {
+            if(queueMaxSize == null)
+                queueMaxSize = gui.getChooseQueueMaxSize().getInt();
+            return queueMaxSize;
+        }
 
 	public QueueForTransactions<Passenger> getQueueToTicketbox() {
 		if (queueToTicketbox == null) {

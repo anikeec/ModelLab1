@@ -23,6 +23,8 @@ public class Passenger extends Actor {
     private Histo histoQueueToStewardess;
     private Histo histoPassengerService;
     private boolean serviceDone;
+    //queue max size
+    private Integer queueMaxSize;
 
     public Passenger(AirportModel model) {
         this.queueToTicketbox = model.getQueueToTicketbox();
@@ -31,6 +33,7 @@ public class Passenger extends Actor {
         this.histoQueueToTicketbox = model.getHistoPassengerWaitInQueueToTicketbox();
         this.histoQueueToStewardess = model.getHistoPassengerWaitInQueueToStewardess();
         this.histoPassengerService = model.getHistoPassengerServiceTime();
+        this.queueMaxSize = model.getQueueMaxSize();
     }
 
     public double getCreateTime() {
@@ -50,7 +53,7 @@ public class Passenger extends Actor {
     protected void rule() throws DispatcherFinishException {
         createTime = dispatcher.getCurrentTime();
         nameForProtocol = "Passenger " + createTime;
-        if(queueToTicketbox.size() < 5) {
+        if(queueToTicketbox.size() < queueMaxSize) {
             queueToTicketbox.add(this);
             waitForCondition(() -> !queueToTicketbox.contains(this), "wait for ticketbox service");
             histoQueueToTicketbox.add(dispatcher.getCurrentTime() - createTime);
@@ -58,7 +61,7 @@ public class Passenger extends Actor {
             histoPassengerService.add(dispatcher.getCurrentTime() - createTime);
             return;
         }
-        if(queueToStewardess.size() < 5) {
+        if(queueToStewardess.size() < queueMaxSize) {
             queueToStewardess.add(this);
             waitForCondition(() -> !queueToStewardess.contains(this), "wait for stewardess service");
             histoQueueToStewardess.add(dispatcher.getCurrentTime() - createTime);

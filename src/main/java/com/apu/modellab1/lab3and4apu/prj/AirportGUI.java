@@ -57,7 +57,7 @@ public class AirportGUI extends JFrame{
 	private ChooseRandom chooseRandomTicketboxHandleTime = null;
 
 	private ChooseData chooseTicketboxAmount = null;
-
+        private ChooseData chooseQueueMaxSize = null;
 	private ChooseData chooseDataFinishTime = null;
 	private StatisticsManager statisticsManager;
 
@@ -221,6 +221,7 @@ public class AirportGUI extends JFrame{
 			jPanelModelParameters.add(getChooseRandomPassInterval(), null);
 			jPanelModelParameters.add(getChooseRandomTicketboxHandleTime(), null);
 			jPanelModelParameters.add(getChooseTicketboxAmount(), null);
+                        jPanelModelParameters.add(getChooseQueueMaxSize(), null);
 			jPanelModelParameters.add(getChooseModellingFinishTime(), null);
 		}
 		return jPanelModelParameters;
@@ -300,10 +301,18 @@ public class AirportGUI extends JFrame{
 			chooseTicketboxAmount.setBounds(new Rectangle(4, 148, 201, 53));
 			chooseTicketboxAmount.setTitle("Ticketbox amount");
 			chooseTicketboxAmount.setText("1");
-	
-
 		}
 		return chooseTicketboxAmount;
+	}
+        
+        public ChooseData getChooseQueueMaxSize() {
+		if (chooseQueueMaxSize == null) {
+			chooseQueueMaxSize = new ChooseData();
+			chooseQueueMaxSize.setBounds(new Rectangle(4, 207, 201, 53));
+			chooseQueueMaxSize.setTitle("Queue max size");
+			chooseQueueMaxSize.setText("1");
+		}
+		return chooseQueueMaxSize;
 	}
 
 
@@ -315,7 +324,7 @@ public class AirportGUI extends JFrame{
 	public ChooseData getChooseModellingFinishTime() {
 		if (chooseDataFinishTime == null) {
 			chooseDataFinishTime = new ChooseData();
-			chooseDataFinishTime.setBounds(new Rectangle(4, 207, 201, 53));
+			chooseDataFinishTime.setBounds(new Rectangle(4, 266, 201, 53));
 			chooseDataFinishTime.setTitle("Modelling timeout");
 			chooseDataFinishTime.setText("500");
 			chooseDataFinishTime
