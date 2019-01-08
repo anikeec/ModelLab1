@@ -24,6 +24,8 @@ public class Stewardess extends Actor {
     private Randomable rnd;
     // Час роботи генератора
     private double finishTime;
+    private boolean buzyFlag;
+    private double steardessRestTime = 0.1;
 
     // Конструктор, у якому ініціалізуються усі поля класу
     // через доступ до моделі та візуальної частини
@@ -38,15 +40,29 @@ public class Stewardess extends Actor {
     public void rule() throws DispatcherFinishException {
             // Створюємо умову, виконання якої буде чекати актор
             BooleanSupplier queueSize = () -> queueToStewardess.size() > 0;
+            BooleanSupplier stewardessBusy = () -> this.isBuzyFlag() == false;
             // цикл виконання правил дії
             while (getDispatcher().getCurrentTime() <= finishTime) {
                     // Перевірка наявності транзакції та чекання на її появу
                     waitForCondition(queueSize, "for Passenger in queue to stewardesses");
+                    waitForCondition(stewardessBusy, "for Stewardess become unbusy");
+                    this.setBuzyFlag(true);
                     Passenger passenger = queueToStewardess.removeFirst();
                     queueToAirplane.add(passenger);
                     // Імітація обробки транзакції
                     holdForTime(rnd.next());
                     passenger.setServiceDone(true);
+                    this.setBuzyFlag(false);
+                    holdForTime(steardessRestTime);
             }
     }
+
+    public boolean isBuzyFlag() {
+        return buzyFlag;
+    }
+
+    public void setBuzyFlag(boolean buzyFlag) {
+        this.buzyFlag = buzyFlag;
+    }
+    
 }
