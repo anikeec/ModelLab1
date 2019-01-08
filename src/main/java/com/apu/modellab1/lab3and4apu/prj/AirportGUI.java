@@ -53,11 +53,11 @@ public class AirportGUI extends JFrame{
 	private JPanel jPanelStat = null;
 
 	private ChooseRandom chooseRandomPassInterval = null;
-
 	private ChooseRandom chooseRandomTicketboxHandleTime = null;
-
+        private ChooseRandom chooseRandomFlyInterval = null;
 	private ChooseData chooseTicketboxAmount = null;
         private ChooseData chooseQueueMaxSize = null;
+        private ChooseData choosePassengersPerFly = null;
 	private ChooseData chooseDataFinishTime = null;
 	private StatisticsManager statisticsManager;
 
@@ -222,6 +222,8 @@ public class AirportGUI extends JFrame{
 			jPanelModelParameters.add(getChooseRandomTicketboxHandleTime(), null);
 			jPanelModelParameters.add(getChooseTicketboxAmount(), null);
                         jPanelModelParameters.add(getChooseQueueMaxSize(), null);
+                        jPanelModelParameters.add(getChooseRandomFlyInterval(), null);
+                        jPanelModelParameters.add(getChoosePassengersPerFly(), null);
 			jPanelModelParameters.add(getChooseModellingFinishTime(), null);
 		}
 		return jPanelModelParameters;
@@ -288,7 +290,16 @@ public class AirportGUI extends JFrame{
 		}
 		return chooseRandomTicketboxHandleTime;
 	}
-
+        
+        public ChooseRandom getChooseRandomFlyInterval() {
+		if (chooseRandomFlyInterval == null) {
+			chooseRandomFlyInterval = new ChooseRandom();
+			chooseRandomFlyInterval.setRandom(new Negexp(1));
+			chooseRandomFlyInterval.setTitle("Airplane fly time");
+			chooseRandomFlyInterval.setBounds(new Rectangle(4, 325, 201, 52));
+		}
+		return chooseRandomFlyInterval;
+	}        
 
 	/**
 	 * This method initializes chooseDataHeapMaxSize	
@@ -314,7 +325,16 @@ public class AirportGUI extends JFrame{
 		}
 		return chooseQueueMaxSize;
 	}
-
+        
+        public ChooseData getChoosePassengersPerFly() {
+		if (choosePassengersPerFly == null) {
+			choosePassengersPerFly = new ChooseData();
+			choosePassengersPerFly.setBounds(new Rectangle(4, 384, 201, 53));
+			choosePassengersPerFly.setTitle("Passengers per fly");
+			choosePassengersPerFly.setText("10");
+		}
+		return choosePassengersPerFly;
+	}        
 
 	/**
 	 * This method initializes chooseDataFinishTime	
@@ -358,8 +378,7 @@ public class AirportGUI extends JFrame{
 		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(667, 317);
 		this.setContentPane(getJContentPane());
-		this
-				.setTitle("Simple SMO research by imitation way");
+		this.setTitle("Simple SMO research by imitation way");
 	}
 
 	/**
