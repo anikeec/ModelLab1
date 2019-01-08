@@ -29,11 +29,11 @@ import com.apu.modellab1.example.market.MarketGUI;
 import com.apu.modellab1.example.smo2.QSystemExampleUI;
 import hidepackForLab.HomeWorkForLab1;
 import main.MainForTests;
-import com.apu.modellab1.toLab1.App;
+//import com.apu.modellab1.*;
 import com.apu.modellab1.toLab2.TestRandomUI;
 import com.apu.modellab1.toLab2.TestRndFile;
 import com.apu.modellab1.toLab2.TestStreamUI;
-import com.apu.modellab1.toLab3and4.GUI;
+//import com.apu.modellab1.toLab3and4.GUI;
 import com.apu.modellab1.toLab7_testTrans.TransGUI;
 import com.apu.modellab1.toLab8_testGradient.TestGradientUI;
 
@@ -157,6 +157,8 @@ public class MainUI extends JFrame {
 	private JButton jButtonD1Example = null;
 
 	private JButton jButtonD1RandomValue = null; 
+        
+        private JButton jButtonD1RandomValueApu = null;
 
 	private JButton jButtonD222 = null;
 
@@ -183,6 +185,8 @@ public class MainUI extends JFrame {
 	private JButton jButtonD3rgr = null;
 	
 	private JButton jButtonD3GUI = null;
+        
+        private JButton jButtonD3GUIapu = null;
 
 	private JButton jButtonD3Test = null;
 
@@ -1244,13 +1248,36 @@ public class MainUI extends JFrame {
 			jButtonD1RandomValue.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					getJDialog1().setVisible(false);
-					App app = new App();
+					com.apu.modellab1.toLab1.App app = new com.apu.modellab1.toLab1.App();
 					app.setLocationRelativeTo(jButtonD1RandomValue);
 					app.setVisible(true);
 				}
 			});
 		}
 		return jButtonD1RandomValue;
+	}
+        
+        /**
+	 * This method initializes jButtonD1RandomValue
+	 * 
+	 * @return javax.swing.JButton
+	 */
+	private JButton getJButtonD1RandomValueApu() {
+		if (jButtonD1RandomValueApu == null) {
+			jButtonD1RandomValueApu = new JButton();
+			jButtonD1RandomValueApu.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5,
+					Color.white));
+			jButtonD1RandomValueApu.setText("Study randoms");
+			jButtonD1RandomValueApu.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					getJDialog1().setVisible(false);
+					com.apu.modellab1.lab1apu.App app = new com.apu.modellab1.lab1apu.App();
+					app.setLocationRelativeTo(jButtonD1RandomValueApu);
+					app.setVisible(true);
+				}
+			});
+		}
+		return jButtonD1RandomValueApu;
 	}
 
 	/**
@@ -1615,7 +1642,7 @@ public class MainUI extends JFrame {
 			jButtonD3GUI.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					getJDialog3().setVisible(false);
-					GUI app = new com.apu.modellab1.toLab3and4.GUI();
+					com.apu.modellab1.toLab3and4.GUI app = new com.apu.modellab1.toLab3and4.GUI();
 					app.setLocationRelativeTo(MainUI.this);
 					app.setVisible(true);
 
@@ -1623,6 +1650,25 @@ public class MainUI extends JFrame {
 			});
 		}
 		return jButtonD3GUI;
+	}
+        
+        private JButton getJButtonD3GUIapu() {
+		if (jButtonD3GUIapu == null) {
+			jButtonD3GUIapu = new JButton();
+			jButtonD3GUIapu.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5,
+					5, 5, java.awt.Color.white));
+			jButtonD3GUIapu.setText("Example of simple SMO model's realization");
+			jButtonD3GUIapu.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					getJDialog3().setVisible(false);
+					com.apu.modellab1.lab3and4apu.GUI app = new com.apu.modellab1.lab3and4apu.GUI();
+					app.setLocationRelativeTo(MainUI.this);
+					app.setVisible(true);
+
+				}
+			});
+		}
+		return jButtonD3GUIapu;
 	}
 
 	/**
@@ -1782,6 +1828,7 @@ public class MainUI extends JFrame {
 			jContentPaneD1.setLayout(gridLayoutD1);
 			jContentPaneD1.add(getJButtonD1Ord(), null);
 			jContentPaneD1.add(getJButtonD1RandomValue(), null);
+                        jContentPaneD1.add(getJButtonD1RandomValueApu(), null);
 			jContentPaneD1.add(getJButtonD1Example(), null);
 			jContentPaneD1.add(getJButtonD1Test(), null);
 		}
@@ -1831,6 +1878,7 @@ public class MainUI extends JFrame {
 			jContentPaneD3.add(getJButtonD3Model(), null);
 			jContentPaneD3.add(getJButtonD3Example(), null);
 			jContentPaneD3.add(getJButtonD3GUI(), null);
+                        jContentPaneD3.add(getJButtonD3GUIapu(), null);
 			jContentPaneD3.add(getJButtonD3rgr(), null);
 			jContentPaneD3.add(getJButtonD3ord(), null);
 			jContentPaneD3.add(getJButtonD3Test(), null);
