@@ -35,7 +35,8 @@ public class AirportGUI extends JFrame{
 
 	private JPanel jContentPane = null;
 
-	private Diagram diagramQueueSize = null;
+	private Diagram diagramTicketboxQueueSize = null;
+        private Diagram diagramStewardessQueueSize = null;
 
 	private JButton jButtonStart = null;
 
@@ -49,11 +50,11 @@ public class AirportGUI extends JFrame{
 
 	private JPanel jPanelStat = null;
 
-	private ChooseRandom chooseRandomGen = null;
+	private ChooseRandom chooseRandomPassInterval = null;
 
-	private ChooseRandom chooseRandomDev = null;
+	private ChooseRandom chooseRandomTicketboxHandleTime = null;
 
-	private ChooseData chooseDataNdevice = null;
+	private ChooseData chooseTicketboxAmount = null;
 
 	private ChooseData chooseDataFinishTime = null;
 	private StatisticsManager statisticsManager;
@@ -84,7 +85,7 @@ public class AirportGUI extends JFrame{
 
 	private void startTest() {
 		getJButtonStart().setEnabled(false);
-		getDiagramQueue().clear();
+		getDiagramTicketboxQueue().clear();
 		Dispatcher dispatcher = new Dispatcher();		
 		dispatcher.addDispatcherFinishListener(
 				()->getJButtonStart().setEnabled(true));
@@ -135,22 +136,37 @@ public class AirportGUI extends JFrame{
 			gridBagConstraints12.ipady = -1;
 			gridBagConstraints12.anchor = GridBagConstraints.EAST;
 			gridBagConstraints12.gridx = 1;
-			GridBagConstraints gbc_diagramQueueSize = new GridBagConstraints();
-			gbc_diagramQueueSize.insets = new Insets(4, 3, 5, 4);
-			gbc_diagramQueueSize.gridx = 0;
-			gbc_diagramQueueSize.gridy = 0;
-			gbc_diagramQueueSize.ipadx = 183;
-			gbc_diagramQueueSize.ipady = -86;
-			gbc_diagramQueueSize.fill = java.awt.GridBagConstraints.BOTH;
-			gbc_diagramQueueSize.weightx = 1.0D;
-			gbc_diagramQueueSize.weighty = 2.0D;
-			gbc_diagramQueueSize.gridwidth = 2;
+                        
+			GridBagConstraints gbc_diagramTicketboxQueueSize = new GridBagConstraints();
+			gbc_diagramTicketboxQueueSize.insets = new Insets(4, 3, 5, 4);
+			gbc_diagramTicketboxQueueSize.gridx = 0;
+			gbc_diagramTicketboxQueueSize.gridy = 0;
+//			gbc_diagramTicketboxQueueSize.ipadx = 183;
+//			gbc_diagramTicketboxQueueSize.ipady = -86;
+			gbc_diagramTicketboxQueueSize.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gbc_diagramTicketboxQueueSize.weightx = 0.5D;
+			gbc_diagramTicketboxQueueSize.weighty = 2.0D;
+			gbc_diagramTicketboxQueueSize.gridwidth = 1;
+                        
+                        GridBagConstraints gbc_diagramStewardessQueueSize = new GridBagConstraints();
+			gbc_diagramStewardessQueueSize.insets = new Insets(4, 3, 5, 4);
+			gbc_diagramStewardessQueueSize.gridx = 1;
+			gbc_diagramStewardessQueueSize.gridy = 0;
+//			gbc_diagramStewardessQueueSize.ipadx = 183;
+//			gbc_diagramStewardessQueueSize.ipady = -86;
+			gbc_diagramStewardessQueueSize.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gbc_diagramStewardessQueueSize.weightx = 0.5D;
+			gbc_diagramStewardessQueueSize.weighty = 2.0D;
+			gbc_diagramStewardessQueueSize.gridwidth = 1;
+                        
 			jPanelTest = new JPanel();
 			GridBagLayout gbl_jPanelTest = new GridBagLayout();
 			gbl_jPanelTest.rowWeights = new double[]{0.0, 0.0};
 			gbl_jPanelTest.rowHeights = new int[]{0, 0};
 			jPanelTest.setLayout(gbl_jPanelTest);
-			jPanelTest.add(getDiagramQueue(), gbc_diagramQueueSize);
+                        
+			jPanelTest.add(getDiagramTicketboxQueue(), gbc_diagramTicketboxQueueSize);
+                        jPanelTest.add(getDiagramStewardessQueue(), gbc_diagramStewardessQueueSize);
 			jPanelTest.add(getJButtonStart(), gridBagConstraints12);
 			jPanelTest.add(getJCheckBox(), gridBagConstraints13);
 			jPanelTest
@@ -222,13 +238,13 @@ public class AirportGUI extends JFrame{
 	 * @return widgets.ChooseRandom	
 	 */
 	public ChooseRandom getChooseRandomPassInterval() {
-		if (chooseRandomGen == null) {
-			chooseRandomGen = new ChooseRandom();
-			chooseRandomGen.setRandom(new Negexp(1));
-			chooseRandomGen.setTitle("Timeout between passengers");
-			chooseRandomGen.setBounds(new Rectangle(4, 30, 201, 52));
+		if (chooseRandomPassInterval == null) {
+			chooseRandomPassInterval = new ChooseRandom();
+			chooseRandomPassInterval.setRandom(new Negexp(1));
+			chooseRandomPassInterval.setTitle("Timeout between passengers");
+			chooseRandomPassInterval.setBounds(new Rectangle(4, 30, 201, 52));
 		}
-		return chooseRandomGen;
+		return chooseRandomPassInterval;
 	}
 
 
@@ -238,13 +254,13 @@ public class AirportGUI extends JFrame{
 	 * @return widgets.ChooseRandom	
 	 */
 	public ChooseRandom getChooseRandomTicketboxHandleTime() {
-		if (chooseRandomDev == null) {
-			chooseRandomDev = new ChooseRandom();
-			chooseRandomDev.setRandom(new Negexp(0.8));
-			chooseRandomDev.setTitle("Ticketbox handling time");
-			chooseRandomDev.setBounds(new Rectangle(4, 90, 201, 52));
+		if (chooseRandomTicketboxHandleTime == null) {
+			chooseRandomTicketboxHandleTime = new ChooseRandom();
+			chooseRandomTicketboxHandleTime.setRandom(new Negexp(0.8));
+			chooseRandomTicketboxHandleTime.setTitle("Ticketbox handling time");
+			chooseRandomTicketboxHandleTime.setBounds(new Rectangle(4, 90, 201, 52));
 		}
-		return chooseRandomDev;
+		return chooseRandomTicketboxHandleTime;
 	}
 
 
@@ -254,15 +270,15 @@ public class AirportGUI extends JFrame{
 	 * @return widgets.ChooseData	
 	 */
 	public ChooseData getChooseTicketboxAmount() {
-		if (chooseDataNdevice == null) {
-			chooseDataNdevice = new ChooseData();
-			chooseDataNdevice.setBounds(new Rectangle(4, 148, 201, 53));
-			chooseDataNdevice.setTitle("Ticketbox amount");
-			chooseDataNdevice.setText("1");
+		if (chooseTicketboxAmount == null) {
+			chooseTicketboxAmount = new ChooseData();
+			chooseTicketboxAmount.setBounds(new Rectangle(4, 148, 201, 53));
+			chooseTicketboxAmount.setTitle("Ticketbox amount");
+			chooseTicketboxAmount.setText("1");
 	
 
 		}
-		return chooseDataNdevice;
+		return chooseTicketboxAmount;
 	}
 
 
@@ -354,18 +370,27 @@ public class AirportGUI extends JFrame{
 	 * @see buldo2011.IBuldoGUI
 	 * @return paint.Diagram
 	 */
-	public Diagram getDiagramQueue() {
-		if (diagramQueueSize == null) {
-			diagramQueueSize = new Diagram();
-			diagramQueueSize.setVerticalMaxText("20");
-			diagramQueueSize.setHorizontalMaxText("500");
-			diagramQueueSize.setTitleText("Queue max size");
-			diagramQueueSize.setPainterColor(new java.awt.Color(204, 102, 0));
+	public Diagram getDiagramTicketboxQueue() {
+		if (diagramTicketboxQueueSize == null) {
+			diagramTicketboxQueueSize = new Diagram();
+			diagramTicketboxQueueSize.setVerticalMaxText("20");
+			diagramTicketboxQueueSize.setHorizontalMaxText("500");
+			diagramTicketboxQueueSize.setTitleText("Ticketbox queue size");
+			diagramTicketboxQueueSize.setPainterColor(new java.awt.Color(204, 102, 0));
 		}
-		return diagramQueueSize;
+		return diagramTicketboxQueueSize;
 	}
 
-
+        public Diagram getDiagramStewardessQueue() {
+		if (diagramStewardessQueueSize == null) {
+			diagramStewardessQueueSize = new Diagram();
+			diagramStewardessQueueSize.setVerticalMaxText("20");
+			diagramStewardessQueueSize.setHorizontalMaxText("500");
+			diagramStewardessQueueSize.setTitleText("Stewardess queue size");
+			diagramStewardessQueueSize.setPainterColor(new java.awt.Color(204, 102, 0));
+		}
+		return diagramStewardessQueueSize;
+	}
 
 
 	private StatisticsManager getStatisticsManager() {
@@ -378,7 +403,7 @@ public class AirportGUI extends JFrame{
 	
 	protected void onTimeCaretUpdate() {
 		if (getJPanelTest().isShowing()) {
-			getDiagramQueue().setHorizontalMaxText(
+			getDiagramTicketboxQueue().setHorizontalMaxText(
 					chooseDataFinishTime.getText());
 		}
 	}

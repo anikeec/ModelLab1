@@ -16,15 +16,17 @@ import stat.Histo;
  */
 public class Passenger extends Actor {
     private double createTime;
-    private QueueForTransactions<Passenger> queue;
-    private Histo histoQueue;
-    private Histo histoService;
+    private QueueForTransactions<Passenger> queueToTicketbox;
+    private QueueForTransactions<Passenger> queueToStewardess;
+    private Histo histoQueueToTicketbox;
+    private Histo histoPassengerService;
     private boolean serviceDone;
 
     public Passenger(AirportModel model) {
-        this.queue = model.getQueue();
-        this.histoQueue = model.getHistoTransactionWaitInQueue();
-        this.histoService = model.getHistoTransactionServiceTime();
+        this.queueToTicketbox = model.getQueueToTicketbox();
+        this.queueToStewardess = model.getQueueToStewardess();
+        this.histoQueueToTicketbox = model.getHistoPassengerWaitInQueueToTicketbox();
+        this.histoPassengerService = model.getHistoPassengerServiceTime();
     }
 
     public double getCreateTime() {
@@ -44,11 +46,11 @@ public class Passenger extends Actor {
     protected void rule() throws DispatcherFinishException {
         createTime = dispatcher.getCurrentTime();
         nameForProtocol = "Passenger " + createTime;
-        queue.add(this);
-        waitForCondition(() -> !queue.contains(this), "мають забрати на обслуговування");
-        histoQueue.add(dispatcher.getCurrentTime() - createTime);
+        queueToTicketbox.add(this);
+        waitForCondition(() -> !queueToTicketbox.contains(this), "мають забрати на обслуговування");
+        histoQueueToTicketbox.add(dispatcher.getCurrentTime() - createTime);
         waitForCondition(() -> serviceDone, "мають завершити обслуговування");
-        histoService.add(dispatcher.getCurrentTime() - createTime);
+        histoPassengerService.add(dispatcher.getCurrentTime() - createTime);
     }
 
 }

@@ -25,21 +25,25 @@ public class AirportModel implements IStatisticsable {
 	// Обслуговуючий прилад
 	private Ticketbox ticketbox;		
 	//Бригада обслуговуючих пристроїв
-	private MultiActor multiDevice;
+	private MultiActor multTicketbox;
 	
 	/////////Черги\\\\\\\\\
 	// Черга транзакцій
-	private QueueForTransactions<Passenger> queue;
+	private QueueForTransactions<Passenger> queueToTicketbox;        
+        private QueueForTransactions<Passenger> queueToStewardess;
 	
 	/////////Гістограми\\\\\\\\\\\\
 	// Гістограма для довжини черги
-	private DiscretHisto discretHistoQueue;
+	private DiscretHisto discretHistoQueueToTicketbox;
+        private DiscretHisto discretHistoQueueToStewardess;
 	// Гістограма для часу перебування у черзі
-	private Histo histoTransactionWaitInQueue;
+	private Histo histoPassengerWaitInQueueToTicketbox;
+        private Histo histoPassengerWaitInQueueToStewardess;
 	// Гістограма для часу обслуговування
-	private Histo histoTransactionServiceTime;
+	private Histo histoPassengerServiceTime;
 	// Гістограма для часу чекання Device
-	private Histo histoWaitDevice;
+	private Histo histoWaitTicketbox;
+        private Histo histoWaitStewardess;
 
 	// ////////////////////////////////////////
 	// Єдиний спосіб створити модель, це викликати цей конструктор
@@ -61,7 +65,7 @@ public class AirportModel implements IStatisticsable {
 
 	private void componentsToStartList() {
 		dispatcher.addStartingActor(getGenerator());
-		dispatcher.addStartingActor(getMultiDevice());
+		dispatcher.addStartingActor(getMultiTicketbox());
 
 	}
 
@@ -72,67 +76,96 @@ public class AirportModel implements IStatisticsable {
 		return generator;
 	}
 
-	public QueueForTransactions<Passenger> getQueue() {
-		if (queue == null) {
-			queue = new QueueForTransactions<>("Queue", dispatcher,
-					getDiscretHistoQueue());
+	public QueueForTransactions<Passenger> getQueueToTicketbox() {
+		if (queueToTicketbox == null) {
+			queueToTicketbox = new QueueForTransactions<>("QueueToTicketbox", dispatcher,
+					getDiscretHistoQueueToTicketbox());
 		}
-		return queue;
+		return queueToTicketbox;
+	}
+        
+        public QueueForTransactions<Passenger> getQueueToStewardess() {
+		if (queueToStewardess == null) {
+			queueToStewardess = new QueueForTransactions<>("QueueToStewardess", dispatcher,
+					getDiscretHistoQueueToStewardess());
+		}
+		return queueToStewardess;
 	}
 
 	public Ticketbox getTicketbox() {
 		if (ticketbox == null) {
 			ticketbox = new Ticketbox("Ticketbox", gui, this);
-			ticketbox.setHistoForActorWaitingTime(getHistoWaitDevice());
+			ticketbox.setHistoForActorWaitingTime(getHistoWaitTicketbox());
 		}
 		return ticketbox;
 	}
 	
 	
-	public MultiActor getMultiDevice() {
-		if(multiDevice == null){
-			multiDevice = new MultiActor();
-			multiDevice.setOriginal(getTicketbox());
-			multiDevice.setNumberOfClones(gui.getChooseTicketboxAmount().getInt());
-			multiDevice.setNameForProtocol("Створення бригади обслуговуючих пристроїв");
+	public MultiActor getMultiTicketbox() {
+		if(multTicketbox == null){
+			multTicketbox = new MultiActor();
+			multTicketbox.setOriginal(getTicketbox());
+			multTicketbox.setNumberOfClones(gui.getChooseTicketboxAmount().getInt());
+			multTicketbox.setNameForProtocol("Create amount of ticketboxes");
 		}
-		return multiDevice;
+		return multTicketbox;
 	}
 
 
-	public DiscretHisto getDiscretHistoQueue() {
-		if (discretHistoQueue == null) {
-			discretHistoQueue = new DiscretHisto();
+	public DiscretHisto getDiscretHistoQueueToTicketbox() {
+		if (discretHistoQueueToTicketbox == null) {
+			discretHistoQueueToTicketbox = new DiscretHisto();
 		}
-		return discretHistoQueue;
+		return discretHistoQueueToTicketbox;
+	}
+        
+        public DiscretHisto getDiscretHistoQueueToStewardess() {
+		if (discretHistoQueueToStewardess == null) {
+			discretHistoQueueToStewardess = new DiscretHisto();
+		}
+		return discretHistoQueueToStewardess;
 	}
 
-	public Histo getHistoTransactionWaitInQueue() {
-		if (histoTransactionWaitInQueue == null) {
-			histoTransactionWaitInQueue = new Histo();
+	public Histo getHistoPassengerWaitInQueueToTicketbox() {
+		if (histoPassengerWaitInQueueToTicketbox == null) {
+			histoPassengerWaitInQueueToTicketbox = new Histo();
 		}
-		return histoTransactionWaitInQueue;
+		return histoPassengerWaitInQueueToTicketbox;
+	}
+        
+        public Histo getHistoPassengerWaitInQueueToStewardess() {
+		if (histoPassengerWaitInQueueToStewardess == null) {
+			histoPassengerWaitInQueueToStewardess = new Histo();
+		}
+		return histoPassengerWaitInQueueToStewardess;
 	}
 
-	public Histo getHistoWaitDevice() {
-		if (histoWaitDevice == null) {
-			histoWaitDevice = new Histo();
+	public Histo getHistoWaitTicketbox() {
+		if (histoWaitTicketbox == null) {
+			histoWaitTicketbox = new Histo();
 		}
-		return histoWaitDevice;
+		return histoWaitTicketbox;
+	}
+        
+        public Histo getHistoWaitStewardess() {
+		if (histoWaitStewardess == null) {
+			histoWaitStewardess = new Histo();
+		}
+		return histoWaitStewardess;
 	}
 
 	public void initForTest() {
-		getQueue().setPainter(gui.getDiagramQueue().getPainter());
+		getQueueToTicketbox().setPainter(gui.getDiagramTicketboxQueue().getPainter());
 		if(gui.getJCheckBox().isSelected()){
 			dispatcher.setProtocolFileName("Console");
 		}
 
 	}
 
-	public Histo getHistoTransactionServiceTime() {
-		if( histoTransactionServiceTime== null)
-			histoTransactionServiceTime = new Histo();
-		return histoTransactionServiceTime;
+	public Histo getHistoPassengerServiceTime() {
+		if( histoPassengerServiceTime== null)
+			histoPassengerServiceTime = new Histo();
+		return histoPassengerServiceTime;
 	}
 
 	// Реалізація інтерфейсу IStatisticsable
@@ -144,13 +177,13 @@ public class AirportModel implements IStatisticsable {
 	@Override
 	public Map<String, IHisto> getStatistics() {
 		Map<String, IHisto> map = new HashMap<>();
-		map.put("Гістограма для довжини черги", getDiscretHistoQueue());
+		map.put("Гістограма для довжини черги", getDiscretHistoQueueToTicketbox());
 		map.put("Гістограма для часу чекання у черзі",
-				getHistoTransactionWaitInQueue());
+				getHistoPassengerWaitInQueueToTicketbox());
 		map.put("Гістограма для часу простою обслуговуючого пристрою",
 				getTicketbox().getWaitingTimeHisto());
 		map.put("Гістограма для часу обслуговування",
-				getHistoTransactionServiceTime());
+				getHistoPassengerServiceTime());
 
 		return map;
 	}
