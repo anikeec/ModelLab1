@@ -18,14 +18,18 @@ public class Passenger extends Actor {
     private double createTime;
     private QueueForTransactions<Passenger> queueToTicketbox;
     private QueueForTransactions<Passenger> queueToStewardess;
+    private QueueForTransactions<Passenger> queueToRailway;
     private Histo histoQueueToTicketbox;
+    private Histo histoQueueToStewardess;
     private Histo histoPassengerService;
     private boolean serviceDone;
 
     public Passenger(AirportModel model) {
         this.queueToTicketbox = model.getQueueToTicketbox();
         this.queueToStewardess = model.getQueueToStewardess();
+        this.queueToRailway = model.getQueueToRailway();
         this.histoQueueToTicketbox = model.getHistoPassengerWaitInQueueToTicketbox();
+        this.histoQueueToStewardess = model.getHistoPassengerWaitInQueueToStewardess();
         this.histoPassengerService = model.getHistoPassengerServiceTime();
     }
 
@@ -46,11 +50,23 @@ public class Passenger extends Actor {
     protected void rule() throws DispatcherFinishException {
         createTime = dispatcher.getCurrentTime();
         nameForProtocol = "Passenger " + createTime;
-        queueToTicketbox.add(this);
-        waitForCondition(() -> !queueToTicketbox.contains(this), "мають забрати на обслуговування");
-        histoQueueToTicketbox.add(dispatcher.getCurrentTime() - createTime);
-        waitForCondition(() -> serviceDone, "мають завершити обслуговування");
-        histoPassengerService.add(dispatcher.getCurrentTime() - createTime);
+        if(queueToTicketbox.size() < 5) {
+            queueToTicketbox.add(this);
+            waitForCondition(() -> !queueToTicketbox.contains(this), "wait for ticketbox service");
+            histoQueueToTicketbox.add(dispatcher.getCurrentTime() - createTime);
+            waitForCondition(() -> serviceDone, "finish ticketbox service");
+            histoPassengerService.add(dispatcher.getCurrentTime() - createTime);
+            return;
+        }
+        if(queueToStewardess.size() < 5) {
+            queueToStewardess.add(this);
+            waitForCondition(() -> !queueToStewardess.contains(this), "wait for stewardess service");
+            histoQueueToStewardess.add(dispatcher.getCurrentTime() - createTime);
+            waitForCondition(() -> serviceDone, "finish stewardess service");
+            histoPassengerService.add(dispatcher.getCurrentTime() - createTime);
+            return;
+        }
+        queueToRailway.add(this);
     }
 
 }

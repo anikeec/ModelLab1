@@ -16,7 +16,8 @@ import rnd.Randomable;
 public class Ticketbox extends Actor {
 
     // Черга для тразакцій
-    private QueueForTransactions<Passenger> queue;
+    private QueueForTransactions<Passenger> queueToTicketbox;
+    private QueueForTransactions<Passenger> queueToAirplane;
     // Генератор часу, що витрачає прилад на обслуговування транзакції
     private Randomable rnd;
     // Час роботи генератора
@@ -28,17 +29,19 @@ public class Ticketbox extends Actor {
             setNameForProtocol(name);
             finishTime = gui.getChooseModellingFinishTime().getDouble();
             rnd = gui.getChooseRandomTicketboxHandleTime();
-            queue = model.getQueueToTicketbox();
+            queueToTicketbox = model.getQueueToTicketbox();
+            queueToAirplane = model.getQueueToAirplane();
     }
 
     public void rule() throws DispatcherFinishException {
             // Створюємо умову, виконання якої буде чекати актор
-            BooleanSupplier queueSize = () -> queue.size() > 0;
+            BooleanSupplier queueSize = () -> queueToTicketbox.size() > 0;
             // цикл виконання правил дії
             while (getDispatcher().getCurrentTime() <= finishTime) {
                     // Перевірка наявності транзакції та чекання на її появу
-                    waitForCondition(queueSize, "we wait for Passenger in queue");
-                    Passenger passenger = queue.removeFirst();
+                    waitForCondition(queueSize, "for Passenger in queue to ticketbox");
+                    Passenger passenger = queueToTicketbox.removeFirst();
+                    queueToAirplane.add(passenger);
                     // Імітація обробки транзакції
                     holdForTime(rnd.next());
                     passenger.setServiceDone(true);

@@ -19,6 +19,7 @@ public class Stewardess extends Actor {
 
     // Черга для тразакцій
     private QueueForTransactions<Passenger> queueToStewardess;
+    private QueueForTransactions<Passenger> queueToAirplane;
     // Генератор часу, що витрачає прилад на обслуговування транзакції
     private Randomable rnd;
     // Час роботи генератора
@@ -31,6 +32,7 @@ public class Stewardess extends Actor {
             finishTime = gui.getChooseModellingFinishTime().getDouble();
             rnd = gui.getChooseRandomTicketboxHandleTime();
             queueToStewardess = model.getQueueToStewardess();
+            queueToAirplane = model.getQueueToAirplane();
     }
 
     public void rule() throws DispatcherFinishException {
@@ -39,8 +41,9 @@ public class Stewardess extends Actor {
             // цикл виконання правил дії
             while (getDispatcher().getCurrentTime() <= finishTime) {
                     // Перевірка наявності транзакції та чекання на її появу
-                    waitForCondition(queueSize, "we wait for Passenger in queue to stewardesses");
+                    waitForCondition(queueSize, "for Passenger in queue to stewardesses");
                     Passenger passenger = queueToStewardess.removeFirst();
+                    queueToAirplane.add(passenger);
                     // Імітація обробки транзакції
                     holdForTime(rnd.next());
                     passenger.setServiceDone(true);
